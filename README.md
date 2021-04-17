@@ -27,4 +27,14 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-# mqttControl
+# TODO
+- Add button with type selection 
+- dbl click to edit properties ? 
+- table with topic pattern  -- topic , value, count , timestamp
+- dialog for each GridItem
+- rename to Grid prefix
+- GridText
+- GridSlider
+- GridProgress
+
+
