@@ -1,8 +1,28 @@
 import Vue from 'vue'
+import VueEx from 'vuex'
 import App from './App.vue'
+import vuetify from './plugins/vuetify';
+import VueLodash from 'vue-lodash'
+import lodash from 'lodash'
 
 Vue.config.productionTip = false
+Vue.use(VueLodash, { name: 'custom' , lodash: lodash })
+Vue.use(VueEx)
+
+export const eb = new Vue();
+
+import Vuetify from 'vuetify/lib'
+
+import 'font-awesome/css/font-awesome.min.css' 
+
+export default new Vuetify({
+  icons: {
+    iconfont: 'fa4', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+  },
+})
 
 new Vue({
-  render: h => h(App),
+  vuetify,
+  eb,
+  render: h => h(App)
 }).$mount('#app')
