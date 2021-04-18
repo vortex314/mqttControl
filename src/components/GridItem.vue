@@ -1,7 +1,7 @@
 <template>
   <div>
     <item-compass v-if="item.widget.type == 'compass'" :widget="item.widget" />
-    <item-gauge v-if="item.widget.type == 'gauge'" :widget="item.widget" />
+    <grid-gauge v-if="item.widget.type == 'gauge'" :widget="item.widget" />
     <item-line-plot
       v-if="item.widget.type == 'linePlot'"
       :widget="item.widget"
@@ -13,13 +13,13 @@
 
 <script>
 import ItemCompass from "./ItemCompass.vue";
-import ItemGauge from "./ItemGauge.vue";
+import GridGauge from "./GridGauge.vue";
 import ItemButton from "./ItemButton.vue";
 import ItemLinePlot from "./ItemLinePlot.vue";
 import ItemStatus from "./ItemStatus.vue";
 export default {
   name: "GridItem",
-  components: { ItemGauge, ItemCompass, ItemLinePlot, ItemButton, ItemStatus },
+  components: { GridGauge, ItemCompass, ItemLinePlot, ItemButton, ItemStatus },
   props: {
     item: {
       type: Object,

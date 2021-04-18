@@ -1,5 +1,5 @@
 <template>
-  <span :color="color"> {{ value }}</span>
+  <span :color="color"> {{ prefix }}{{ value }}{{ postfix }}</span>
 </template>
 
 <script>
@@ -11,8 +11,8 @@ export default {
   props: {
     widget: {
       title: "gpio2mqtt",
-      units: "no Units",
-      range: [true, false],
+      postfix: "",
+      prefix: "",
       topic: "src/wiring/system/cpu",
     },
   },
@@ -38,8 +38,7 @@ export default {
   mounted() {
     this.mqttRegister(this, this.widget.topic);
   },
-  created() {
-  },
+  created() {},
 };
 </script>
 

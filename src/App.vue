@@ -24,7 +24,7 @@
           mdi-lock-open-variant-outline
         </v-icon>
         <v-icon @click="showDialog()"> mdi-plus </v-icon>
-        <grid-dialogue v-model="showAddDialog" />
+        <grid-dialog v-model="showAddDialog" />
       </v-row>
     </v-app-bar>
 
@@ -36,7 +36,7 @@
 
 <script>
 import Grid from "./components/Grid";
-import GridDialogue from "./components/GridDialogue";
+import GridDialog from "./components/GridDialog";
 import { MQTT } from "./components/mqtt.js";
 import { config } from "./components/config.js";
 import { EventBus } from "./components/eventbus.js";
@@ -45,7 +45,7 @@ export default {
   name: "App",
   components: {
     Grid,
-    GridDialogue,
+    GridDialog,
   },
   props: {},
 

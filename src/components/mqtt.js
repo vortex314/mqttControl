@@ -8,6 +8,7 @@ export const MQTT = Vue.observable({
     connected: false,
     client: null,
     components: [],
+    topics:new Set(),
     getConfig() {
         return {
             host: this.host,
@@ -54,6 +55,7 @@ export const MQTT = Vue.observable({
                 console.log("connection lost: " + responseObject.errorMessage);
             }
             this.client.onMessageArrived = (message) => {
+                this.topics.add(message.topic)
                 let variant = JSON.parse(message.payloadString)
                 //  console.log("[MQTT] SUB ", message.topic, variant)
                 for (let component of this.components) {
