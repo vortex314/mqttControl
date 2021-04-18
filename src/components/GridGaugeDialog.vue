@@ -1,10 +1,6 @@
 <template>
   <div>
-    <v-select
-                :items="mqtt.MQTT.topics"
-                label="Widget Type"
-                v-model="selectedTopic"
-              />
+
     <v-row><v-text-field label="Topic" v-model="input.topic" /></v-row>
     <v-row>
       <v-text-field label="Title" v-model="input.title" />
