@@ -1,5 +1,5 @@
-# grid
-Purpose is to have an easy customisable MQTT dashboard and crontrol panel.
+# MQTT Control center
+Purpose is to have an easy customisable MQTT dashboard and control panel.
 Features :
 - users select a topic and the way to display it
 - then by drag and drop het puts the MQTT widget at the right place and size in its dashboard
