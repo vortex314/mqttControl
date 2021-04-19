@@ -25,7 +25,6 @@ export default {
         range: [0, 100],
         topic: "no topic",
       },
-      selectedTopic:"",
     };
   },
   methods: {}

@@ -27,7 +27,7 @@ export var mqttBase = {
       return h + ":" + m + ":" + s;
     },
     timeoutHandler
-      () {
+      : function() {
       this.mqtt.timer = setTimeout(this.timeoutHandler, this.mqtt.timeout);
       if (!this.mqtt.expired) {
         console.log(this.time(), "mixin mqtt timed out", this.widget.topic, this.$options.name, this.mqtt.timeout)

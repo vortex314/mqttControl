@@ -2,13 +2,12 @@
   <div>
     <v-row>
       <v-select
-        :items="mqtt.MQTT.topics"
-        label="Widget Type"
-        v-model="selectedTopic"
+        :items="Array.from(mqtt.MQTT.topics)"
+        label="Topic"
+        v-model="input.topic"
       />
     </v-row>
 
-    <v-row><v-text-field label="Topic" v-model="input.topic" /></v-row>
     <v-row>
       <v-text-field label="Title" v-model="input.title" />
     </v-row>
