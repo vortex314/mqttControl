@@ -35,6 +35,7 @@ export const MQTT = Vue.observable({
         }
     },
     subscribeAllComponents() {
+        this.subscribe("src/#")
         for (let component of this.components) {
             this.subscribe(component.topic)
         }

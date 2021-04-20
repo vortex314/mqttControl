@@ -30,7 +30,7 @@ export var mqttBase = {
       : function() {
       this.mqtt.timer = setTimeout(this.timeoutHandler, this.mqtt.timeout);
       if (!this.mqtt.expired) {
-        console.log(this.time(), "mixin mqtt timed out", this.widget.topic, this.$options.name, this.mqtt.timeout)
+//        console.log(this.time(), "mixin mqtt timed out", this.widget.topic, this.$options.name, this.mqtt.timeout)
         this.mqtt.expired = true;
       }
     },
@@ -38,7 +38,7 @@ export var mqttBase = {
       clearTimeout(this.mqtt.timer);
       this.mqtt.timer = setTimeout(this.timeoutHandler, this.mqtt.timeout);
       if (this.mqtt.expired) {
-        console.log(this.time(), "mixin watchdog reset", this.widget.topic, this.$options.name, this.mqtt.timeout)
+//        console.log(this.time(), "mixin watchdog reset", this.widget.topic, this.$options.name, this.mqtt.timeout)
         this.mqtt.expired = false;
       }
     },
