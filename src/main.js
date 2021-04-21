@@ -1,13 +1,12 @@
 import Vue from 'vue'
-import VueEx from 'vuex'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
+import store from './store'
 import VueLodash from 'vue-lodash'
 import lodash from 'lodash'
 
 Vue.config.productionTip = false
 Vue.use(VueLodash, { name: 'custom' , lodash: lodash })
-Vue.use(VueEx)
 
 export const eb = new Vue();
 
@@ -24,5 +23,6 @@ export default new Vuetify({
 new Vue({
   vuetify,
   eb,
+  store,
   render: h => h(App)
 }).$mount('#app')

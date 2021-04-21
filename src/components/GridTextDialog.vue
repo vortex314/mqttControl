@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-select
-        :items="Array.from(mqtt.MQTT.topics)"
+        :items="Array.from(mqtt.MQTT.topics).sort()"
         label="Topic"
         v-model="input.topic"
       />
