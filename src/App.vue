@@ -30,6 +30,7 @@
 
     <v-main>
       <Grid />
+      <mqtt-tree/>
     </v-main>
   </v-app>
 </template>
@@ -40,12 +41,14 @@ import GridDialog from "./components/GridDialog";
 import { MQTT } from "./components/mqtt.js";
 import { config } from "./components/config.js";
 import { EventBus } from "./components/eventbus.js";
+import MqttTree from './components/MqttTree.vue';
 
 export default {
   name: "App",
   components: {
     Grid,
     GridDialog,
+    MqttTree,
   },
   props: {},
 

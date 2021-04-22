@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @dblclick="dblClick">
     <item-compass v-if="item.widget.type == 'compass'" :widget="item.widget" />
     <grid-gauge v-if="item.widget.type == 'gauge'" :widget="item.widget" />
     <item-line-plot
@@ -33,7 +33,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    dblClick: (ev) => {
+      console.log(" double clicked ", ev);
+    },
+  },
   mounted() {},
   created() {},
 };

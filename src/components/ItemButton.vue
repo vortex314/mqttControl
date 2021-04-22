@@ -1,23 +1,19 @@
 <template>
-<v-container>
-  <v-row color="success">
-    <v-btn :color="color"> {{ widget.title }}</v-btn>
-    <v-spacer/>
-    <v-btn color="success"  @click="onOffTarget = true"
-       >ON</v-btn
-    >
-    <v-btn color="error"  @click="onOffTarget = false"
-      >OFF</v-btn
-    >
-  </v-row>
-</v-container>
+  <v-container @dblclick="this.$emit('dblclick')">
+    <v-row color="success" @dblclick="this.$emit('dblclick')">
+      <v-btn :color="color"> {{ widget.title }}</v-btn>
+      <v-spacer @dblclick="this.$emit('dblclick')" />
+      <v-btn color="success" @click="onOffTarget = true">ON</v-btn>
+      <v-btn color="error" @click="onOffTarget = false">OFF</v-btn>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import {mqttBase} from "./mqttBase.js"
+import { mqttBase } from "./mqttBase.js";
 
 export default {
-  mixins:[mqttBase],
+  mixins: [mqttBase],
   name: "ItemButton",
   props: {
     widget: {
@@ -33,12 +29,12 @@ export default {
       value: true,
     };
   },
-  computed:{
-      color(){
-          if ( this.mqttExpired ) return "grey"
-          else if ( this.value ) return "success"
-          else return "error"
-      }
+  computed: {
+    color() {
+      if (this.mqttExpired) return "grey";
+      else if (this.value) return "success";
+      else return "error";
+    },
   },
   mounted() {
     // subscribe to src/
