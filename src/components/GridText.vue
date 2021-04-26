@@ -1,5 +1,11 @@
 <template>
-  <span :color="color"> {{ prefix }}{{ value }}{{ postfix }}</span>
+  <v-container>
+    <v-row v-for="topic in widget.topics" v-bind:key="topic">
+      <span :color="color">
+        {{ widget.prefix }}{{ values[topic] }}{{ widget.postfix }}</span
+      >
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -13,18 +19,26 @@ export default {
       title: "gpio2mqtt",
       postfix: "",
       prefix: "",
-      topic: "src/wiring/system/cpu",
+      topics: [],
     },
+    topic: null,
   },
   data() {
-    return { value: "", timeout: false };
+    return {
+      values: {},
+      timeout: false,
+    };
   },
   methods: {
     onMqttMessage(topic, variant) {
-      if (topic == this.widget.topic) {
+      if (
+        this.widget.topics.find((str) => {
+          return str == topic;
+        })
+      ) {
         this.mqtt.watchdogReset();
         console.log(topic, variant);
-        this.value = JSON.stringify(variant);
+        this.values[topic] = JSON.stringify(variant);
       }
     },
   },
@@ -36,7 +50,8 @@ export default {
     },
   },
   mounted() {
-    this.mqttRegister(this, this.widget.topic);
+    console.log(" mounted Gridtext ")
+    for (let topic of this.widget.topics) this.mqttRegister(this, topic);
   },
   created() {},
 };

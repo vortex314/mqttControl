@@ -69,13 +69,12 @@ export default {
     onMqttMessage(topic, variant) {
       if (topic == this.widget.topic) {
         this.mqtt.watchdogReset()
-        console.log(topic, variant);
+//        console.log(topic, variant);
         this.value = variant;
       }
     },
   },
   created() {
-    console.log("ItemGauge created");
 
     const max = this.widget.range[1];
     const min = this.widget.range[0];
@@ -99,7 +98,6 @@ export default {
     },
   },
   mounted() {
-    console.log("ItemGauge mounted");
     this.mqtt.register(this,this.widget.topic);
   },
 };

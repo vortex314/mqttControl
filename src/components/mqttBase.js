@@ -45,11 +45,11 @@ export var mqttBase = {
     mqttRegister(obj, topic) { this.mqtt.MQTT.register(obj, topic) }
   },
   mounted() {
-    console.log(" mixin mounted Base item ");
+//    console.log(" mixin mounted Base item ");
     this.mqtt.timer = setTimeout(this.timeoutHandler
       , this.mqtt.timeout);
   },
   created() {
-    console.log(" mixin created Base item ");
+//    console.log(" mixin created Base item ");
   },
 };

@@ -96,7 +96,7 @@ export default {
     onMqttMessage(topic, variant) {
       if (topic == this.widget.topic) {
         this.mqtt.watchdogReset();
-        console.log("LINE" ,topic, variant);
+//        console.log("LINE" ,topic, variant);
         this.addSample(variant, 0);
       }
     },
@@ -113,10 +113,10 @@ export default {
       this.chart.setData(this.series);
     },
     onCreate() {
-      console.log("onCreate");
+//      console.log("onCreate");
     },
     onDelete() {
-      console.log("onDelete");
+//      console.log("onDelete");
     },
   },
 };

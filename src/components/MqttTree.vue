@@ -4,14 +4,13 @@
     v-model="tree"
     :items="items"
     activatable
-    return-object="true"
+    return-object
     dense
     item-key="id"
-    ><template v-slot:label="{ item }" selectable="isLeaf(item)">
+  >
+    <template v-slot:label="{ item }" selectable="isLeaf(item)">
       {{ item.name }}
-      <span v-if="isLeaf(item)" >
-        : {{ JSON.stringify(item.value) }}
-      </span>
+      <span v-if="isLeaf(item)"> : {{ JSON.stringify(item.value) }} </span>
     </template>
   </v-treeview>
 </template>
@@ -40,11 +39,16 @@ export default {
       let parts = topic.split("/");
       let childrenArray = this.items;
       let childObject = null;
-      for (let part of parts) {
+      let path=""
+      for (let i=0;i<parts.length;i++ ) {
+        let part = parts[i]
+        if ( path.length != 0 ) path+="/"
+        path+=part
         childObject = this.hasChild(childrenArray, part);
         if (childObject == null) {
           console.log("add topic to tree", topic);
           childObject = this.createParent(part);
+          childObject.topic = path
           childrenArray.push(childObject);
           childrenArray.sort((a, b) =>
             a.name > b.name ? 1 : b.name > a.name ? -1 : 0
@@ -54,7 +58,7 @@ export default {
         }
         childrenArray = childObject.children;
       }
-      childObject.topic = topic
+      childObject.topic = topic;
       childObject.value = variant;
     },
     hasChild(parent, x) {
@@ -79,18 +83,25 @@ export default {
         name: x,
       };
     },
-    findItemById(id){
-      console.log(id)
+    findItemById(id) {
+      console.log(id);
     },
-    isLeaf(obj){
-      return obj.value != undefined
+    isLeaf(obj) {
+      return obj.value != undefined;
     },
     clicked(ev) {
-      console.log(ev); // array of activated id's
+      let item=ev[0]
+      if (this.isLeaf(item)) {
+        this.$emit('topic',item.topic);
+      } else {
+        this.$emit('topic',item.topic+"/#");
+      }
+      console.log("emitting",item); // array of activated id's
     },
   },
 };
 </script>
 
-<style lang="sass"  >
+<style lang="scss"  >
+$treeview-node-shaped-margin: 8px;
 </style>

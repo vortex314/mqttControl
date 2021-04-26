@@ -150,23 +150,19 @@ export default {
         item.locked = false;
       }
     });
-    EventBus.$on("gridAdd", () => {
+    EventBus.$on("gridAdd", (widget) => {
       console.log("gridAdd");
       let max=0;
       for( let item of this.dlayouts[0].items){
-        if ( max < item.id) max=item.id
+        if ( max < parseInt(item.id)) max=parseInt(item.id)
       }
       this.dlayouts[0].items.push({
-              id: max+1,
+              id: (max+1).toString(),
               x: 0,
               y: 50,
               width: 6,
               height: 6,
-              widget: {
-                type: "status",
-                topic: "src/gpio/system/alive",
-                title: "GPIO",
-              },
+              widget:widget,
               locked: false,
             })
     });

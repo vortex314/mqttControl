@@ -1,7 +1,5 @@
 <template>
-  <div>
-
-    <v-row><v-text-field label="Topic" v-model="input.topic" /></v-row>
+  <v-container class="px-6 py-6">
     <v-row>
       <v-text-field label="Title" v-model="input.title" />
     </v-row>
@@ -11,7 +9,7 @@
     <v-row>
       <v-text-field label="Range" v-model="input.range" />
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -23,7 +21,6 @@ export default {
         title: "no Title",
         units: "no Units",
         range: [0, 100],
-        topic: "no topic",
       },
     };
   },

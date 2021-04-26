@@ -8,18 +8,20 @@
     />
     <item-button v-if="item.widget.type == 'button'" :widget="item.widget" />
     <item-status v-if="item.widget.type == 'status'" :widget="item.widget" />
+    <grid-text v-if="item.widget.type == 'text'" :widget="item.widget" />
   </div>
 </template>
 
 <script>
 import ItemCompass from "./ItemCompass.vue";
 import GridGauge from "./GridGauge.vue";
+import GridText from "./GridText"
 import ItemButton from "./ItemButton.vue";
 import ItemLinePlot from "./ItemLinePlot.vue";
 import ItemStatus from "./ItemStatus.vue";
 export default {
   name: "GridItem",
-  components: { GridGauge, ItemCompass, ItemLinePlot, ItemButton, ItemStatus },
+  components: { GridGauge, GridText, ItemCompass, ItemLinePlot, ItemButton, ItemStatus },
   props: {
     item: {
       type: Object,

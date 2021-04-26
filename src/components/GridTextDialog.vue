@@ -1,13 +1,5 @@
 <template>
-  <div>
-    <v-row>
-      <v-select
-        :items="Array.from(mqtt.MQTT.topics).sort()"
-        label="Topic"
-        v-model="input.topic"
-      />
-    </v-row>
-
+  <v-container class="px-6 py-6">
     <v-row>
       <v-text-field label="Title" v-model="input.title" />
     </v-row>
@@ -17,7 +9,7 @@
     <v-row>
       <v-text-field label="Postfix" v-model="input.postfix" />
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -29,22 +21,13 @@ export default {
   data() {
     return {
       input: {
-        title: "no Title",
+        title: "",
         prefix: "",
         postfix: "",
-        topic: "no topic",
       },
     };
   },
   methods: {
-    cancel() {
-      console.log("cancel pressed");
-      this.$emit("end");
-    },
-    add() {
-      console.log("add pressed");
-      this.$emit("end");
-    },
   },
 };
 </script>
