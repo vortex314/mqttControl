@@ -104,8 +104,8 @@ export default {
         },
       ],
       backup: {},
-      counter:0,
-    alives:["gpio2mqtt","serial2mqtt","wiring"],
+      counter: 0,
+      alives: ["gpio2mqtt", "serial2mqtt", "wiring"],
       //         dlayouts : this.$store.state.grid.layout,
     };
   },
@@ -150,21 +150,21 @@ export default {
         item.locked = false;
       }
     });
-    EventBus.$on("gridAdd", (widget) => {
+    EventBus.$on("gridAdd", () => {
       console.log("gridAdd");
-      let max=0;
-      for( let item of this.dlayouts[0].items){
-        if ( max < parseInt(item.id)) max=parseInt(item.id)
+      let max = 0;
+      for (let item of this.dlayouts[0].items) {
+        if (max < parseInt(item.id)) max = parseInt(item.id);
       }
       this.dlayouts[0].items.push({
-              id: (max+1).toString(),
-              x: 0,
-              y: 50,
-              width: 6,
-              height: 6,
-              widget:widget,
-              locked: false,
-            })
+        id: (max + 1).toString(),
+        x: 0,
+        y: 50,
+        width: 6,
+        height: 6,
+        widget: { type:'none'},
+        locked: false,
+      });
     });
   },
   created() {},

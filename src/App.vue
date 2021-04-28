@@ -23,8 +23,7 @@
         <v-icon @click="eb.$emit('gridUnfreeze')" :disabled="!frozen">
           mdi-lock-open-variant-outline
         </v-icon>
-        <v-icon @click="showDialog()"> mdi-plus </v-icon>
-        <grid-dialog v-model="showAddDialog" />
+        <v-icon @click="addWidget()"> mdi-plus </v-icon>
       </v-row>
     </v-app-bar>
 
@@ -36,7 +35,6 @@
 
 <script>
 import Grid from "./components/Grid";
-import GridDialog from "./components/GridDialog";
 import { MQTT } from "./components/mqtt.js";
 import { config } from "./components/config.js";
 import { EventBus } from "./components/eventbus.js";
@@ -45,7 +43,6 @@ export default {
   name: "App",
   components: {
     Grid,
-    GridDialog,
   },
   props: {},
 
@@ -55,13 +52,12 @@ export default {
       config: config,
       frozen: false,
       eb: EventBus,
-      showAddDialog: false,
     };
   },
   methods: {
-    showDialog() {
+    addWidget() {
       console.log(this.$options.name, "clicked");
-      this.showAddDialog = true;
+      EventBus.$emit("gridAdd");
     },
   },
   watch: {

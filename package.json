@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "jshint": "^2.12.0",
     "liquor-tree": "^0.2.70",
     "lodash": "^4.17.21",
     "paho-mqtt": "^1.1.0",

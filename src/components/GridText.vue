@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container >
     <v-row v-for="topic in widget.topics" v-bind:key="topic">
       <span :color="color">
         {{ widget.prefix }}{{ values[topic] }}{{ widget.postfix }}</span
@@ -38,7 +38,9 @@ export default {
       ) {
         this.mqtt.watchdogReset();
         console.log(topic, variant);
-        this.values[topic] = JSON.stringify(variant);
+        if ( this.values[topic]) this.values[topic]=JSON.stringify(variant);
+        else this.$set(this.values,topic,JSON.stringify(variant));
+//        this.values[topic] = JSON.stringify(variant);
       }
     },
   },

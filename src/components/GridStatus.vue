@@ -1,23 +1,23 @@
 <template>
-  <v-btn :color="color"> {{ widget.title }}</v-btn>
+  <v-container>
+    <v-btn :color="color"> {{ widget.title }}</v-btn>
+  </v-container>
 </template>
 
 <script>
 import { mqttBase } from "./mqttBase.js";
 
 export default {
-  name: "ItemStatus",
+  name: "GridStatus",
   mixins: [mqttBase],
   props: {
     widget: {
-      title: "gpio2mqtt",
-      units: "no Units",
-      range: [true, false],
-      topic: "src/gpio2mqtt/system/alive",
+      title: "",
+      topics: [],
     },
   },
   data() {
-    return { value: false, timeout: false };
+    return { value: false, timeout: false, topic: "" };
   },
   methods: {
     onMqttMessage(topic, variant) {
@@ -36,10 +36,10 @@ export default {
     },
   },
   mounted() {
+    this.topic = this.widget.topics[0];
     this.mqttRegister(this, this.widget.topic);
   },
-  created() {
-  },
+  created() {},
 };
 </script>
 

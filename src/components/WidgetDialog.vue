@@ -6,20 +6,25 @@
       <v-tab>Settings</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
+
       <v-tab-item>
         <v-container class="px-6">
           <v-select :items="items" label="Widget Type" v-model="selectedType" />
         </v-container>
       </v-tab-item>
+
       <v-tab-item>
         <mqtt-selection @topics="topicsFromSelection" />
       </v-tab-item>
+
       <v-tab-item>
         <grid-gauge-dialog v-if="selectedType == 'gauge'" ref="widgetSettings" />
         <grid-text-dialog v-if="selectedType == 'text'" ref="widgetSettings" />
+        <grid-status-dialog v-if="selectedType == 'status'" ref="widgetSettings" />
       </v-tab-item>
+      
       <v-btn color="blue darken-1" text @click="cancel"> Cancel </v-btn>
-      <v-btn color="blue darken-1" text @click="add"> Add </v-btn>
+      <v-btn color="blue darken-1" text @click="updateWidget"> Update </v-btn>
     </v-tabs-items>
   </v-dialog>
 </template>
@@ -27,9 +32,10 @@
 <script>
 import GridGaugeDialog from "./GridGaugeDialog";
 import GridTextDialog from "./GridTextDialog";
+import GridStatusDialog from "./GridStatusDialog";
 import MqttSelection from "./MqttSelection.vue";
 import {cloneDeep,merge} from "lodash";
-import { EventBus } from "./eventbus";
+//import { EventBus } from "./eventbus";
 
 
 export default {
@@ -37,10 +43,13 @@ export default {
   components: {
     GridGaugeDialog,
     GridTextDialog,
+    GridStatusDialog,
     MqttSelection,
   },
   props: {
     value: Boolean,
+    widget:{
+    }
   },
   data() {
     return {
@@ -65,12 +74,13 @@ export default {
     cancel() {
       this.show = false;
     },
-    add() {
+    updateWidget() {
       this.show = false;
-      console.log(" creating widget ",this.selectedType,cloneDeep(this.topics),cloneDeep(this.$refs.widgetSettings.input))
+      console.log(" updating widget ",this.selectedType,cloneDeep(this.topics),cloneDeep(this.$refs.widgetSettings.input))
       let widget = {type:this.selectedType,topics:cloneDeep(this.topics)}
-      merge(widget,cloneDeep(this.$refs.widgetSettings.input))
-      EventBus.$emit("gridAdd",widget)
+      merge(widget,cloneDeep(this.$refs.widgetSettings.input)) // get child dialog data
+      this.$emit('widgetUpdate',widget);
+//      EventBus.$emit("gridAdd",widget)
     },
     onTopicsEvent(ev) {
       this.topics = ev;
