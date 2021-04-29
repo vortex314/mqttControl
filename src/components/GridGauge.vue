@@ -1,34 +1,80 @@
 <template>
-  <radial-gauge :value="value" :options="gaugeOptions" @dblclick="dblClick()" />
+  <v-container @dblclick="dblClick" class="py-0 px-0">
+    <radial-gauge :value="value" :options="gaugeOptions" />
+    <v-dialog v-if="show" v-model="show" persistent max-width="600px" dense>
+      <v-card class="px-6 py-6">
+        <v-row>
+          <v-text-field label="Topic" v-model="params.topic" />
+        </v-row>
+        <mqtt-tree @topic="updateTopic" />
+        <v-row>
+          <v-text-field label="Title" v-model="params.title" />
+        </v-row>
+        <v-row>
+          <v-text-field label="Units" v-model="params.units" />
+        </v-row>
+        <v-row>
+          <v-text-field label="Min" v-model="params.min" type="number" />
+        </v-row>
+        <v-row>
+          <v-text-field label="Max" v-model="params.max" type="number" />
+        </v-row>
+        <v-row>
+          <v-spacer />
+          <v-btn color="blue darken-1" text @click="cancel"> Cancel </v-btn>
+          <v-btn color="blue darken-1" text @click="updateWidget">
+            Update
+          </v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>
 import RadialGauge from "vue-canvas-gauges/src/RadialGauge.vue";
+import MqttTree from "./MqttTree";
 import { mqttBase } from "./mqttBase.js";
-
 
 export default {
   name: "GridGauge",
-  mixins:[mqttBase],
+  mixins: [mqttBase],
   components: {
     RadialGauge,
+    MqttTree,
   },
   props: {
     widget: {
-      title: "no Title",
-      units: "no Units",
-      range: [0, 100],
-      topic: "no topic",
+      type: Object,
+      default() {
+        return {
+          title: "",
+          units: "",
+          min: 0,
+          max: 101,
+          topic: "",
+        };
+      },
     },
   },
   data() {
     return {
-      value: 100,
+      value: 50,
+      show: false,
+      settings: false,
+      params: {
+        type: "gauge",
+        title: this.widget.title || "",
+        units: this.widget.units || "",
+        min: this.widget.min || 0,
+        max: this.widget.max || 100,
+        topic: this.widget.topic || "",
+      },
       gaugeOptions: {
-        units: this.widget.units,
-        title: this.widget.title,
-        minValue: this.widget.range[0],
-        maxValue: this.widget.range[1],
+        units: this.widget.units || "",
+        title: this.widget.title || "",
+        minValue: this.widget.min || 0,
+        maxValue: this.widget.max || 100,
         width: 200,
         height: 200,
         strokeTicks: true,
@@ -65,19 +111,30 @@ export default {
   methods: {
     dblClick() {
       console.log(" double clicked ");
+      this.show = true;
     },
     onMqttMessage(topic, variant) {
-      if (topic == this.widget.topic) {
-        this.mqtt.watchdogReset()
-//        console.log(topic, variant);
+      if (topic == this.widget.topic && typeof variant == Number) {
+        this.mqtt.watchdogReset();
+        //        console.log(topic, variant);
         this.value = variant;
       }
     },
+    updateTopic(t) {
+      this.params.topic = t;
+    },
+    updateWidget() {
+      this.$emit("widgetUpdate", this.params);
+      this.show = false;
+    },
+    cancel() {
+      this.show = false;
+    },
   },
   created() {
-
-    const max = this.widget.range[1];
-    const min = this.widget.range[0];
+    // calculate majorTicks
+    const max = this.widget.max || 100;
+    const min = this.widget.min || 0;
     const logRange = Math.floor(Math.log10(max - min));
     const step = Math.pow(10, logRange);
     //   console.log(` min : ${min} , max : ${max}, step : ${max}, logRange : ${logRange }`)
@@ -96,9 +153,18 @@ export default {
     mqttTopic() {
       return this.mqtt.topic;
     },
+    show2: {
+      get() {
+        return this.value;
+      },
+      set(newVal) {
+        this.$emit("input", newVal);
+      },
+    },
   },
   mounted() {
-    this.mqtt.register(this,this.widget.topic);
+    this.show = false;
+    this.mqtt.register(this, this.widget.topic);
   },
 };
 </script>

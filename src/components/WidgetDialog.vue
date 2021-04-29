@@ -22,7 +22,7 @@
         <grid-text-dialog v-if="selectedType == 'text'" ref="widgetSettings" />
         <grid-status-dialog v-if="selectedType == 'status'" ref="widgetSettings" />
       </v-tab-item>
-      
+
       <v-btn color="blue darken-1" text @click="cancel"> Cancel </v-btn>
       <v-btn color="blue darken-1" text @click="updateWidget"> Update </v-btn>
     </v-tabs-items>

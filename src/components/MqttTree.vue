@@ -96,7 +96,7 @@ export default {
       } else {
         this.$emit('topic',item.topic+"/#");
       }
-      console.log("emitting",item); // array of activated id's
+      console.log("emit topic",item.topic); // array of activated id's
     },
   },
 };
