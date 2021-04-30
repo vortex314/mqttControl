@@ -97,9 +97,13 @@ export const MQTT = Vue.observable({
         message.qos = qos;
         this.client.send(message);
     },
-    subscribe(topics) {
-        console.log("[MQTT] subscribe " + topics);
-        this.client.subscribe(topics, { qos: 1 });
+    subscribe(topic) {
+
+        if (topic === undefined) console.log("[MQTT] subscribe UNDEFINED ");
+        else {
+            console.log("[MQTT] subscribe  " + topic);
+            this.client.subscribe(topic, { qos: 0 });
+        }
     },
     onConnectionLost(responseObject) {
         this.connected = false;

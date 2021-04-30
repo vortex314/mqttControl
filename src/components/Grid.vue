@@ -121,7 +121,8 @@ export default {
       this.dlayouts.push(dl);
     },
     resizing(ev) {
-      console.log("resizing", ev);
+      let x=false
+     if(x) console.log("resizing", ev);
     },
     getConfig() {
       return this._.cloneDeep(this.dlayouts);
