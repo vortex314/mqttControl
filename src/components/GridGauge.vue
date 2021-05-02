@@ -1,8 +1,8 @@
 <template>
-  <v-container class="py-0 px-0">
+  <v-container py-0 px-0  @contextmenu="rightClick($event)" >
     <radial-gauge :value="value" :options="gaugeOptions" />
     <v-dialog
-      v-model="widget.showSettings"
+      v-model="dialog"
       persistent
       max-width="600px"
       dense
@@ -59,11 +59,6 @@ export default {
     },
   },
   methods: {
-    rightClick(ev) {
-      console.log(ev);
-      this.show = true;
-      ev.preventDefault();
-    },
     onMqttMessage(topic, variant) {
       if (topic == this.widget.topic) {
         if (typeof variant == "number") {
@@ -75,16 +70,21 @@ export default {
     updateTopic(t) {
       this.params.topic = t;
     },
+    rightClick(ev) {
+      this.dialog = true;
+      ev.preventDefault();
+    },
     updateWidget() {
       this.$emit("widgetUpdate", this.params);
-      this.$emit("show", false);
+      this.dialog = false;
     },
     cancel() {
-      this.$emit("show", false);
+      this.dialog = false;
     },
   },
   data() {
     return {
+      dialog:false,
       value: 50,
       params: {
         type: "gauge",
@@ -164,7 +164,6 @@ export default {
   },
   mounted() {
     console.log("mounted ", this.widget);
-    this.show = false;
     this.mqtt.register(this, this.widget.topic);
   },
 };

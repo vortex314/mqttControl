@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app color="primary" dark class="pt-3">
       <v-row>
         <v-text-field v-model="mqtt.host" label="Mqtt Host" />
         <v-text-field

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-0 py-0" @contextmenu="rightClick($event)">
+  <v-container class="px-0 py-0">
     <grid-compass
       v-if="isType('compass')"
       :widget="item.widget"
@@ -11,7 +11,6 @@
       :widget="item.widget"
       :key="key"
       @widgetUpdate="widgetUpdate"
-      @show="showDialog"
     />
     <grid-status
       v-if="isType('status')"
@@ -87,28 +86,10 @@ export default {
     widgetUpdate(newWidget) {
       console.log(" received new widget settings ", newWidget);
       this.item.widget = newWidget;
-      //      let t = this.item.widget.type;
-      //      this.item.widget.type = "none";
-      //      this.item.widget.type = t;
       this.key = new Date().getMilliseconds(); // force widget rebuild
     },
     isType(x) {
       return this.item.widget.type === x;
-    },
-    rightClick(ev) {
-      console.log(
-        "right click ",
-        ev,
-        " for ",
-        this.item.widget.type,
-        " on ",
-        this.item
-      );
-      this.item.widget.showSettings = true;
-      ev.preventDefault();
-    },
-    showDialog(b) {
-      this.item.widget.showSettings = b;
     },
   },
   watch: {

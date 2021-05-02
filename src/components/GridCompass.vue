@@ -1,9 +1,8 @@
 <template>
-  <v-container class="py-0 px-0">
+  <v-container py-0 px-0 @contextmenu="rightClick($event)"  >
     <radial-gauge :value="value" :options="options" />
     <v-dialog
-      v-if="widget.showSettings"
-      v-model="widget.showSettings"
+      v-model="dialog"
       persistent
       max-width="600px"
       dense
@@ -44,19 +43,38 @@ export default {
     widget: { title: "No Title", topic: "", showSettings: false },
   },
   methods: {
+    onMqttMessage(topic, variant) {
+      if (topic == this.widget.topic) {
+        this.mqtt.watchdogReset();
+        this.value = variant;
+      }
+    },
     updateTopic(t) {
       this.params.topic = t;
     },
+    rightClick(ev) {
+      console.log(" right click ",ev);
+      this.dialog = !this.dialog;
+      ev.preventDefault();
+    },
     updateWidget() {
       this.$emit("widgetUpdate", this.params);
-      this.widget.showSettings = false;
+      this.dialog = false;
     },
     cancel() {
-      this.widget.showSettings = false;
+      this.dialog = false;
+    },
+  },
+  computed: {
+    classColor: function() {
+      console.log("radialGauge ",this.RadialGauge)
+      if (this.mqtt.expired) return "grey";
+      else  return "blue";
     },
   },
   data() {
     return {
+      dialog:false,
       params: {
         type: "compass",
         title: this.widget.title || "",
@@ -109,10 +127,7 @@ export default {
     };
   },
   mounted() {
-    setInterval(() => {
-      //      console.log('tick');
-      this.value += Math.round((Math.random() - 0.5) * 5);
-    }, 100);
+        this.mqttRegister(this, this.widget.topic);
   },
 };
 </script>

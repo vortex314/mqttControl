@@ -7,8 +7,6 @@ export const MQTT = new Vue.observable( {
     host: "limero.ddns.net",
     port: 1884,
     components: [],
-    topics:null,
-
     constructor() {
         console.log("MQTT ctor()");
         this.topics=new Map(); // non-reactive properties
