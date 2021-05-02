@@ -105,7 +105,6 @@ export default {
       ],
       backup: {},
       counter: 0,
-      alives: ["gpio2mqtt", "serial2mqtt", "wiring"],
       //         dlayouts : this.$store.state.grid.layout,
     };
   },
@@ -121,8 +120,8 @@ export default {
       this.dlayouts.push(dl);
     },
     resizing(ev) {
-      let x=false
-     if(x) console.log("resizing", ev);
+      let x = false;
+      if (x) console.log("resizing", ev);
     },
     getConfig() {
       return this._.cloneDeep(this.dlayouts);
@@ -163,7 +162,7 @@ export default {
         y: 50,
         width: 6,
         height: 6,
-        widget: { type:'none'},
+        widget: { type: "none" },
         locked: false,
       });
     });

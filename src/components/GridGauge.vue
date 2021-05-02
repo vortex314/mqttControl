@@ -1,7 +1,13 @@
 <template>
-  <v-container @dblclick="dblClick" class="py-0 px-0">
+  <v-container class="py-0 px-0">
     <radial-gauge :value="value" :options="gaugeOptions" />
-    <v-dialog v-if="show" v-model="show" persistent max-width="600px" dense>
+    <v-dialog
+      v-if="widget.showSettings"
+      v-model="widget.showSettings"
+      persistent
+      max-width="600px"
+      dense
+    >
       <v-card class="px-6 py-6">
         <v-row>
           <v-text-field label="Topic" v-model="params.topic" />
@@ -14,10 +20,10 @@
           <v-text-field label="Units" v-model="params.units" />
         </v-row>
         <v-row>
-          <v-text-field label="Min" v-model="params.min" type="number" />
+          <v-text-field label="Min" v-model.number="params.min" type="number" />
         </v-row>
         <v-row>
-          <v-text-field label="Max" v-model="params.max" type="number" />
+          <v-text-field label="Max" v-model.number="params.max" type="number" />
         </v-row>
         <v-row>
           <v-spacer />
@@ -109,15 +115,17 @@ export default {
     };
   },
   methods: {
-    dblClick() {
-      console.log(" double clicked ");
+    rightClick(ev) {
+      console.log(ev);
       this.show = true;
+      ev.preventDefault();
     },
     onMqttMessage(topic, variant) {
-      if (topic == this.widget.topic && typeof variant == Number) {
-        this.mqtt.watchdogReset();
-        //        console.log(topic, variant);
-        this.value = variant;
+      if (topic == this.widget.topic) {
+        if (typeof variant == "number") {
+          this.mqtt.watchdogReset();
+          this.value = variant;
+        }
       }
     },
     updateTopic(t) {
@@ -125,14 +133,15 @@ export default {
     },
     updateWidget() {
       this.$emit("widgetUpdate", this.params);
-      this.show = false;
+      this.widget.showSettings = false;
     },
     cancel() {
-      this.show = false;
+      this.widget.showSettings = false;
     },
   },
   created() {
     // calculate majorTicks
+    console.log(" created ", this.widget);
     const max = this.widget.max || 100;
     const min = this.widget.min || 0;
     const logRange = Math.floor(Math.log10(max - min));
@@ -153,16 +162,14 @@ export default {
     mqttTopic() {
       return this.mqtt.topic;
     },
-    show2: {
-      get() {
-        return this.value;
-      },
-      set(newVal) {
-        this.$emit("input", newVal);
-      },
+  },
+  watch: {
+    widget () {
+      this.updateWidget();
     },
   },
   mounted() {
+    console.log("mounted ", this.widget);
     this.show = false;
     this.mqtt.register(this, this.widget.topic);
   },
@@ -170,8 +177,4 @@ export default {
 </script>
 
 <style scoped>
-radial-gauge2 {
-  height: 100%;
-  width: 100%;
-}
 </style>

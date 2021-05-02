@@ -1,20 +1,65 @@
 <template>
-  <radial-gauge :value="value" :options="options" />
+  <v-container class="py-0 px-0">
+    <radial-gauge :value="value" :options="options" />
+    <v-dialog
+      v-if="widget.showSettings"
+      v-model="widget.showSettings"
+      persistent
+      max-width="600px"
+      dense
+    >
+      <v-card class="px-6 py-6">
+        <v-row>
+          <v-text-field label="Topic" v-model="params.topic" />
+        </v-row>
+        <mqtt-tree @topic="updateTopic" />
+        <v-row>
+          <v-text-field label="Title" v-model="params.title" />
+        </v-row>
+        <v-row>
+          <v-spacer />
+          <v-btn color="blue darken-1" text @click="cancel"> Cancel </v-btn>
+          <v-btn color="blue darken-1" text @click="updateWidget">
+            Update
+          </v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>
 import RadialGauge from "vue-canvas-gauges/src/RadialGauge.vue";
+import MqttTree from "./MqttTree";
 
 export default {
   name: "Compass",
   components: {
     RadialGauge,
+    MqttTree,
   },
   props: {
-    widget: { title: "No Title", units: "no Units", topic: "" },
+    widget: { title: "No Title", topic: "" },
+  },
+  methods: {
+    updateTopic(t) {
+      this.params.topic = t;
+    },
+    updateWidget() {
+      this.$emit("widgetUpdate", this.params);
+      this.widget.showSettings = false;
+    },
+    cancel() {
+      this.widget.showSettings = false;
+    },
   },
   data() {
     return {
+      params: {
+        type: "compass",
+        title: this.widget.title || "",
+        topic: this.widget.topic || "",
+      },
       value: 0,
       options: {
         title: this.widget.title,

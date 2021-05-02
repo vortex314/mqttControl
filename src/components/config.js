@@ -20,6 +20,7 @@ export const config = Vue.observable({
       this.config[componentName] = cfg;
     }
     localStorage.setItem(configName, JSON.stringify(this.config));
+    console.log(JSON.stringify(this.config));
   },
   load(configName="default") {
     let configJson = localStorage.getItem(configName);

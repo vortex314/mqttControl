@@ -17,6 +17,7 @@
 
 <script>
 import { mqttBase } from "./mqttBase.js";
+import { MQTT } from "./mqtt.js";
 
 export default {
   name: "MqttTree",
@@ -26,10 +27,14 @@ export default {
       tree: [],
       items: [],
       idCounter: 0,
+      MQTT,
     };
   },
   mounted() {
-    this.mqttRegister(this, "src/#");
+    for (let topic of this.MQTT.topics) {
+      this.updateTopic(topic, "");
+    }
+    //    this.mqttRegister(this, "src/#");
   },
   methods: {
     onMqttMessage(topic, variant) {
@@ -39,16 +44,16 @@ export default {
       let parts = topic.split("/");
       let childrenArray = this.items;
       let childObject = null;
-      let path=""
-      for (let i=0;i<parts.length;i++ ) {
-        let part = parts[i]
-        if ( path.length != 0 ) path+="/"
-        path+=part
+      let path = "";
+      for (let i = 0; i < parts.length; i++) {
+        let part = parts[i];
+        if (path.length != 0) path += "/";
+        path += part;
         childObject = this.hasChild(childrenArray, part);
         if (childObject == null) {
           console.log("add topic to tree", topic);
           childObject = this.createParent(part);
-          childObject.topic = path
+          childObject.topic = path;
           childrenArray.push(childObject);
           childrenArray.sort((a, b) =>
             a.name > b.name ? 1 : b.name > a.name ? -1 : 0
@@ -90,13 +95,13 @@ export default {
       return obj.value != undefined;
     },
     clicked(ev) {
-      let item=ev[0]
+      let item = ev[0];
       if (this.isLeaf(item)) {
-        this.$emit('topic',item.topic);
+        this.$emit("topic", item.topic);
       } else {
-        this.$emit('topic',item.topic+"/#");
+        this.$emit("topic", item.topic + "/#");
       }
-      console.log("emit topic",item.topic); // array of activated id's
+      console.log("emit topic", item.topic); // array of activated id's
     },
   },
 };
