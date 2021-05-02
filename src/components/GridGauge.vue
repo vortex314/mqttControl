@@ -2,7 +2,6 @@
   <v-container class="py-0 px-0">
     <radial-gauge :value="value" :options="gaugeOptions" />
     <v-dialog
-      v-if="widget.showSettings"
       v-model="widget.showSettings"
       persistent
       max-width="600px"
@@ -51,23 +50,42 @@ export default {
   },
   props: {
     widget: {
-      type: Object,
-      default() {
-        return {
-          title: "",
-          units: "",
-          min: 0,
-          max: 101,
-          topic: "",
-        };
-      },
+      title: "",
+      units: "",
+      min: 0,
+      max: 101,
+      topic: "",
+      showSettings: false,
+    },
+  },
+  methods: {
+    rightClick(ev) {
+      console.log(ev);
+      this.show = true;
+      ev.preventDefault();
+    },
+    onMqttMessage(topic, variant) {
+      if (topic == this.widget.topic) {
+        if (typeof variant == "number") {
+          this.mqtt.watchdogReset();
+          this.value = variant;
+        }
+      }
+    },
+    updateTopic(t) {
+      this.params.topic = t;
+    },
+    updateWidget() {
+      this.$emit("widgetUpdate", this.params);
+      this.$emit("show", false);
+    },
+    cancel() {
+      this.$emit("show", false);
     },
   },
   data() {
     return {
       value: 50,
-      show: false,
-      settings: false,
       params: {
         type: "gauge",
         title: this.widget.title || "",
@@ -114,31 +132,7 @@ export default {
       },
     };
   },
-  methods: {
-    rightClick(ev) {
-      console.log(ev);
-      this.show = true;
-      ev.preventDefault();
-    },
-    onMqttMessage(topic, variant) {
-      if (topic == this.widget.topic) {
-        if (typeof variant == "number") {
-          this.mqtt.watchdogReset();
-          this.value = variant;
-        }
-      }
-    },
-    updateTopic(t) {
-      this.params.topic = t;
-    },
-    updateWidget() {
-      this.$emit("widgetUpdate", this.params);
-      this.widget.showSettings = false;
-    },
-    cancel() {
-      this.widget.showSettings = false;
-    },
-  },
+
   created() {
     // calculate majorTicks
     console.log(" created ", this.widget);
@@ -164,7 +158,7 @@ export default {
     },
   },
   watch: {
-    widget () {
+    widget() {
       this.updateWidget();
     },
   },

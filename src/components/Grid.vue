@@ -105,6 +105,7 @@ export default {
       ],
       backup: {},
       counter: 0,
+      alives: ["gpio2mqtt", "serial2mqtt", "wiring"],
       //         dlayouts : this.$store.state.grid.layout,
     };
   },

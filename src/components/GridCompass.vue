@@ -31,15 +31,17 @@
 <script>
 import RadialGauge from "vue-canvas-gauges/src/RadialGauge.vue";
 import MqttTree from "./MqttTree";
+import { mqttBase } from "./mqttBase.js";
 
 export default {
-  name: "Compass",
+  name: "GridCompass",
+  mixins: [mqttBase],
   components: {
     RadialGauge,
     MqttTree,
   },
   props: {
-    widget: { title: "No Title", topic: "" },
+    widget: { title: "No Title", topic: "", showSettings: false },
   },
   methods: {
     updateTopic(t) {

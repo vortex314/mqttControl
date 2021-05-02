@@ -27,12 +27,11 @@ export default {
       tree: [],
       items: [],
       idCounter: 0,
-      MQTT,
     };
   },
   mounted() {
-    for (let topic of this.MQTT.topics) {
-      this.updateTopic(topic, "");
+    for (let topic of MQTT.topics.keys()) {
+      this.updateTopic(topic, MQTT.topics.get(topic));
     }
     //    this.mqttRegister(this, "src/#");
   },
@@ -51,7 +50,7 @@ export default {
         path += part;
         childObject = this.hasChild(childrenArray, part);
         if (childObject == null) {
-          console.log("add topic to tree", topic);
+//          console.log("add topic to tree", topic);
           childObject = this.createParent(part);
           childObject.topic = path;
           childrenArray.push(childObject);

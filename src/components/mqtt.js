@@ -2,21 +2,24 @@ import Vue from 'vue';
 import Paho from "paho-mqtt";
 import { config } from "./config.js";
 
-export const MQTT = Vue.observable({
+export const MQTT = new Vue.observable( {
+    connected:false,
     host: "limero.ddns.net",
     port: 1884,
-    connected: false,
-    client: null,
     components: [],
-    topics: new Set(),
+    topics:null,
+
+    constructor() {
+        console.log("MQTT ctor()");
+        this.topics=new Map(); // non-reactive properties
+        this.client=null;
+        config.register("mqtt", this);
+    },
     getConfig() {
         return {
             host: this.host,
             port: this.port,
         };
-    },
-    constructor() {
-        config.register("mqtt", this);
     },
     setConfig(object) {
         this.host = object.host;
@@ -56,8 +59,8 @@ export const MQTT = Vue.observable({
                 console.log("connection lost: " + responseObject.errorMessage);
             };
             this.client.onMessageArrived = (message) => {
-                this.topics.add(message.topic);
                 let variant = JSON.parse(message.payloadString);
+                this.topics.set(message.topic,variant);
                 //  console.log("[MQTT] SUB ", message.topic, variant)
                 for (let component of this.components) {
                     component.vue.onMqttMessage(message.topic, variant);
@@ -102,7 +105,7 @@ export const MQTT = Vue.observable({
         if (topic === undefined) console.log("[MQTT] subscribe UNDEFINED ");
         else {
             console.log("[MQTT] subscribe  " + topic);
-            this.client.subscribe(topic, { qos: 0 });
+            this.client.subscribe(topic, { qos: 1 });
         }
     },
     onConnectionLost(responseObject) {
@@ -115,5 +118,7 @@ export const MQTT = Vue.observable({
 
 
 });
+
+MQTT.constructor();
 
 //export default Mqtt
